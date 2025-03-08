@@ -17,7 +17,7 @@ Vue Infinite Scroller provides an intuitive, high-performance solution for handl
 Install via npm:
 
 ```bash
-npm install vue-infinite-scroller
+npm install @knijtram/vue-infinite-scroller
 ```
 
 ### Prerequisites
@@ -42,7 +42,7 @@ Basic implementation:
 
 <script>
 import { ref } from 'vue';
-import InfiniteScroller from 'vue-infinite-scroller/components/InfiniteScroller.vue';
+import InfiniteScroller from '@knijtram/vue-infinite-scroller/components/InfiniteScroller.vue';
 
 export default {
   components: { InfiniteScroller },

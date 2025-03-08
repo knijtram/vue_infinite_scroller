@@ -1,5 +1,5 @@
 {
-  "name": "vue-infinite-scroller",
+  "name": "@knijtram/vue-infinite-scroller",
   "version": "1.0.0",
   "description": "An infinite scroller for Vue",
   "author": "Martijn Kuipers",
