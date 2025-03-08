@@ -1,0 +1,63 @@
+{
+  "name": "vue-infinite-scroller",
+  "version": "0.0.1",
+  "description": "An infinite scroller for Vue",
+  "author": "Martijn Kuipers",
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "vue3",
+    "scroller",
+    "infinite-scroll",
+    "virtual-scroller",
+    "performance"
+  ],
+  "main": "dist/vue-infinite-scroller.umd.js",
+  "module": "dist/vue-infinite-scroller.es.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knijtram/vue_infinite_scroller.git"
+  },
+  "bugs": {
+    "url": "https://github.com/knijtram/vue_infinite_scroller/issues"
+  },
+  "homepage": "https://github.com/knijtram/vue_infinite_scroller#readme",
+  "peerDependencies": {
+    "vue": "^3.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/compiler-sfc": "^3.2.0",
+    "@vue/test-utils": "^2.4.0-alpha.2",
+    "eslint": "^8.57.1",
+    "eslint-plugin-vue": "^10.0.0",
+    "globals": "^16.0.0",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.26.0",
+    "vite": "^6.2.1",
+    "vite-plugin-dts": "^4.5.3",
+    "vitest": "^3.0.8",
+    "vue-tsc": "^2.2.8"
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/shims-vue.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
