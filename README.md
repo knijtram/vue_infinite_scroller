@@ -42,7 +42,7 @@ Basic implementation:
 
 <script>
 import { ref } from 'vue';
-import InfiniteScroller from '@knijtram/vue-infinite-scroller/components/InfiniteScroller.vue';
+import InfiniteScroller from '@knijtram/vue-infinite-scroller';
 
 export default {
   components: { InfiniteScroller },
