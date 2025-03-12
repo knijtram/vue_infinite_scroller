@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es2018",
-    "module": "Node16",
+    "target": "ES2018",
+    "module": "ESNext",
     "strict": true,
     "declaration": true,
     "declarationDir": "dist/types",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "importHelpers": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "Bundler",
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -17,8 +17,10 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
-    "skipLibCheck": true
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "types": [
+      "node"
+    ]
   },
   "include": ["src/**/*.js", "src/**/*.*.map", "src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
   "exclude": ["node_modules", "dist"]

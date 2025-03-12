@@ -6,7 +6,8 @@ export default defineComponent({
     props: {
         items: {
             type: Array,
-            default: () => []
+            default: () => [],
+            required: true
         },
         initialCount: {
             type: Number,

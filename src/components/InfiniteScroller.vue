@@ -25,7 +25,8 @@ export default defineComponent({
     props: {
         items: {
             type: Array as PropType<any[]>,
-            default: () => []
+            default: () => [],
+            required: true
         },
         initialCount: {
             type: Number,
@@ -38,10 +39,8 @@ export default defineComponent({
     },
     emits: ['at-top'],
     watch: {
-        items: {
-            handler(value: any[]) {
-                this.displayedItems = value.slice(0, this.initialCount);
-            }
+        items(value: any[]) {
+            this.displayedItems = value.slice(0, this.initialCount);
         }
     },
     methods: {
@@ -54,22 +53,23 @@ export default defineComponent({
             }
         }
     },
+    data() {
+      return {
+          topObserver: null as IntersectionObserver | null,
+          bottomObserver: null as IntersectionObserver | null
+      }
+    },
     setup(props) {
         const displayedItems = ref<any[]>([]);
         const scrollContainer = ref<HTMLElement | null>(null);
         const topSentinel = ref<HTMLElement | null>(null);
         const bottomSentinel = ref<HTMLElement | null>(null);
 
-        const topObserver = ref<IntersectionObserver | null>(null);
-        const bottomObserver = ref<IntersectionObserver | null>(null);
-
         displayedItems.value = props.items.slice(0, props.initialCount);
 
         return {
             displayedItems,
             scrollContainer,
-            topObserver,
-            bottomObserver,
             topSentinel,
             bottomSentinel
         };
