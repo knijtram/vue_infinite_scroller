@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
 import { resolve } from 'path'
@@ -11,6 +11,11 @@ export default defineConfig({
       include: ['src/**/*.ts', 'src/**/*.vue'],
     }),
   ],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+    },
+  },
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
@@ -18,14 +23,18 @@ export default defineConfig({
       fileName: (format) => `vue-infinite-scroller.${format}.js`,
     },
     rollupOptions: {
-      // Make sure to externalize deps that shouldn't be bundled
+      // Externalize dependencies that shouldn't be bundled.
       external: ['vue'],
       output: {
-        // Provide global variables to use in UMD build
+        // Provide global variables for UMD build.
         globals: {
           vue: 'Vue',
         },
       },
     },
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
   },
 })
