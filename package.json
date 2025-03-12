@@ -23,6 +23,7 @@
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
+    "publish": "npm publish",
     "prepublishOnly": "npm run build"
   },
   "repository": {
