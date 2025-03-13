@@ -30,7 +30,7 @@
     <section class="section">
       <h2>Locations</h2>
       <hr>
-      <InfiniteScroller :items="locations" :initial-count="25" class="scroll-container">
+      <InfiniteScroller :items="[]" :initial-count="25" class="scroll-container">
         <template #default="{ item }">
           <div class="item-card">
             <h3>{{ item.city }}</h3>

@@ -4,10 +4,13 @@
         <div ref="topSentinel" class="top-sentinel"></div>
 
         <TransitionGroup name="fade" tag="div" class="items-wrapper">
-            <div v-for="(item, index) in displayedItems" :key="item.id ?? index" class="item">
-                <!-- Render each item using the parent-provided slot content -->
-                <slot :item="item" />
-            </div>
+            <template v-if="displayedItems.length > 0">
+                <div v-for="(item, index) in displayedItems" :key="item.id ?? index" class="item">
+                    <!-- Render each item using the parent-provided slot content -->
+                    <slot :item="item" />
+                </div>
+            </template>
+            <div v-else>{{ nothingFoundMessage }}</div>
         </TransitionGroup>
 
         <!-- Sentinel element to observe when near bottom -->
@@ -47,6 +50,10 @@ export default defineComponent({
         batchSize: {
             type: Number,
             default: 10
+        },
+        nothingFoundMessage: {
+            type: String,
+            default: "No results found"
         },
         emitOptions: {
             type: Object as PropType<EmitOptions>
