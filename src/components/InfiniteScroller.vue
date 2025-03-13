@@ -20,6 +20,11 @@
 import { ref, defineComponent } from 'vue';
 import type { PropType } from 'vue'
 
+interface EmitOptions {
+    topThreshold: number;
+    bottomThreshold: number;
+}
+
 export default defineComponent({
     name: 'InfiniteScroller',
     props: {
@@ -35,9 +40,12 @@ export default defineComponent({
         batchSize: {
             type: Number,
             default: 10
+        },
+        emitOptions: {
+            type: Object as PropType<EmitOptions>
         }
     },
-    emits: ['at-top'],
+    emits: ['at-top', 'at-bottom'],
     watch: {
         items(value: any[]) {
             this.displayedItems = value.slice(0, this.initialCount);
@@ -81,11 +89,14 @@ export default defineComponent({
                     const entry = entries[0];
                     if (entry.isIntersecting) {
                         this.loadMore();
+                        this.$emit('at-bottom', { oldValue: false, newValue: true });
+                    } else {
+                        this.$emit('at-bottom', { oldValue: true, newValue: false });
                     }
                 },
                 {
                     root: this.scrollContainer,
-                    rootMargin: '0px 0px 100px 0px',
+                    rootMargin: `0px 0px ${this.emitOptions?.bottomThreshold ?? 100}px 0px`,
                     threshold: 0
                 }
             );
@@ -104,7 +115,7 @@ export default defineComponent({
                 },
                 {
                     root: this.scrollContainer,
-                    rootMargin: '0px 0px 0px 0px',
+                    rootMargin: `${this.emitOptions?.topThreshold ?? 0}px 0px 0px 0px`,
                     threshold: 0
                 }
             );
