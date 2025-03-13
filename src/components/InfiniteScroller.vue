@@ -91,44 +91,52 @@ export default defineComponent({
         };
     },
     mounted() {
-        if (this.$refs.topSentinel && this.$refs.scrollContainer) {
-            this.topObserver = new IntersectionObserver(
-                (entries) => {
-                    const entry = entries[0];
-                    if (entry.isIntersecting) {
-                        this.$emit('at-top', { oldValue: false, newValue: true });
-                    } else {
-                        this.$emit('at-top', { oldValue: true, newValue: false });
+        const scrollContainer = this.$refs.scrollContainer as HTMLElement | null;
+
+        const topSentinel = this.$refs.topSentinel as HTMLElement | null;
+        const bottomSentinel = this.$refs.bottomSentinel as HTMLElement | null;
+
+        if (scrollContainer) {
+            if (topSentinel) {
+                this.topObserver = new IntersectionObserver(
+                    (entries) => {
+                        const entry = entries[0];
+                        if (entry.isIntersecting) {
+                            this.$emit('at-top', { oldValue: false, newValue: true });
+                        } else {
+                            this.$emit('at-top', { oldValue: true, newValue: false });
+                        }
+                    },
+                    {
+                        root: scrollContainer,
+                        rootMargin: `${this.emitOptions?.topThreshold ?? 0}px 0px 0px 0px`,
+                        threshold: 0.5
                     }
-                },
-                {
-                    root: this.$refs.scrollContainer,
-                    rootMargin: `${this.emitOptions?.topThreshold ?? 0}px 0px 0px 0px`,
-                    threshold: 0.5
-                }
-            );
-            this.topObserver.observe(this.$refs.topSentinel);
+                );
+                this.topObserver.observe(topSentinel);
+            }
+
+            if (bottomSentinel) {
+                this.bottomObserver = new IntersectionObserver(
+                    (entries) => {
+                        const entry = entries[0];
+                        if (entry.isIntersecting) {
+                            this.loadMore();
+                            this.$emit('at-bottom', { oldValue: false, newValue: true });
+                        } else {
+                            this.$emit('at-bottom', { oldValue: true, newValue: false });
+                        }
+                    },
+                    {
+                        root: scrollContainer,
+                        rootMargin: `0px 0px ${this.emitOptions?.bottomThreshold ?? 100}px 0px`,
+                        threshold: 0
+                    }
+                );
+                this.bottomObserver.observe(bottomSentinel);
+            }
         }
 
-        if (this.$refs.bottomSentinel && this.$refs.scrollContainer) {
-            this.bottomObserver = new IntersectionObserver(
-                (entries) => {
-                    const entry = entries[0];
-                    if (entry.isIntersecting) {
-                        this.loadMore();
-                        this.$emit('at-bottom', { oldValue: false, newValue: true });
-                    } else {
-                        this.$emit('at-bottom', { oldValue: true, newValue: false });
-                    }
-                },
-                {
-                    root: this.$refs.scrollContainer,
-                    rootMargin: `0px 0px ${this.emitOptions?.bottomThreshold ?? 100}px 0px`,
-                    threshold: 0
-                }
-            );
-            this.bottomObserver.observe(this.$refs.bottomSentinel);
-        }
     },
     beforeUnmount() {
         if (this.topObserver) this.topObserver.disconnect();
