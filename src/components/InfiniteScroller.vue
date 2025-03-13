@@ -24,12 +24,12 @@ interface EmitOptions {
      * Specifies the number of pixels from the top boundary at which the 'at-top' event is triggered.
      * @Default 0
      */
-    topThreshold: number;
+    topThreshold?: number;
     /**
      * Specifies the number of pixels from the bottom boundary at which the 'at-bottom' event is triggered.
      * @Default 100
      */
-    bottomThreshold: number;
+    bottomThreshold?: number;
 }
 
 export default defineComponent({

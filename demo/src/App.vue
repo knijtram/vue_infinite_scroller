@@ -3,7 +3,7 @@
     <section class="section">
       <h2>People</h2>
       <hr>
-      <InfiniteScroller :items="people" :initial-count="25" class="scroll-container">
+      <InfiniteScroller :items="people" :initial-count="25" :emit-options="{ topThreshold: 0, bottomThreshold: 100 }" class="scroll-container">
         <template #default="{ item }">
           <div class="item-card">
             <h3>{{ item.name }}</h3>
