@@ -3,7 +3,6 @@
         <!-- Sentinel element to observe when near top -->
         <div ref="topSentinel" class="top-sentinel"></div>
 
-        <!-- TransitionGroup for smooth enter animations -->
         <TransitionGroup name="fade" tag="div" class="items-wrapper">
             <div v-for="(item, index) in displayedItems" :key="item.id ?? index" class="item">
                 <!-- Render each item using the parent-provided slot content -->
@@ -21,7 +20,15 @@ import { ref, defineComponent } from 'vue';
 import type { PropType } from 'vue'
 
 interface EmitOptions {
+    /**
+     * Specifies the number of pixels from the top boundary at which the 'at-top' event is triggered.
+     * @Default 0
+     */
     topThreshold: number;
+    /**
+     * Specifies the number of pixels from the bottom boundary at which the 'at-bottom' event is triggered.
+     * @Default 100
+     */
     bottomThreshold: number;
 }
 
@@ -63,10 +70,6 @@ export default defineComponent({
     },
     data() {
         return {
-            scrollContainer: null as HTMLElement | null,
-            topSentinel: null as HTMLElement | null,
-            bottomSentinel: null as HTMLElement | null,
-
             topObserver: null as IntersectionObserver | null,
             bottomObserver: null as IntersectionObserver | null
         }
@@ -81,7 +84,7 @@ export default defineComponent({
         };
     },
     mounted() {
-        if (this.topSentinel && this.scrollContainer) {
+        if (this.$refs.topSentinel && this.$refs.scrollContainer) {
             this.topObserver = new IntersectionObserver(
                 (entries) => {
                     const entry = entries[0];
@@ -92,15 +95,15 @@ export default defineComponent({
                     }
                 },
                 {
-                    root: this.scrollContainer,
+                    root: this.$refs.scrollContainer,
                     rootMargin: `${this.emitOptions?.topThreshold ?? 0}px 0px 0px 0px`,
                     threshold: 0.5
                 }
             );
-            this.topObserver.observe(this.topSentinel);
+            this.topObserver.observe(this.$refs.topSentinel);
         }
 
-        if (this.bottomSentinel && this.scrollContainer) {
+        if (this.$refs.bottomSentinel && this.$refs.scrollContainer) {
             this.bottomObserver = new IntersectionObserver(
                 (entries) => {
                     const entry = entries[0];
@@ -112,12 +115,12 @@ export default defineComponent({
                     }
                 },
                 {
-                    root: this.scrollContainer,
+                    root: this.$refs.scrollContainer,
                     rootMargin: `0px 0px ${this.emitOptions?.bottomThreshold ?? 100}px 0px`,
                     threshold: 0
                 }
             );
-            this.bottomObserver.observe(this.bottomSentinel);
+            this.bottomObserver.observe(this.$refs.bottomSentinel);
         }
     },
     beforeUnmount() {
