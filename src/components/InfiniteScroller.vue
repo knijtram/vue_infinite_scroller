@@ -62,27 +62,44 @@ export default defineComponent({
         }
     },
     data() {
-      return {
-          topObserver: null as IntersectionObserver | null,
-          bottomObserver: null as IntersectionObserver | null
-      }
+        return {
+            scrollContainer: null as HTMLElement | null,
+            topSentinel: null as HTMLElement | null,
+            bottomSentinel: null as HTMLElement | null,
+
+            topObserver: null as IntersectionObserver | null,
+            bottomObserver: null as IntersectionObserver | null
+        }
     },
     setup(props) {
         const displayedItems = ref<any[]>([]);
-        const scrollContainer = ref<HTMLElement | null>(null);
-        const topSentinel = ref<HTMLElement | null>(null);
-        const bottomSentinel = ref<HTMLElement | null>(null);
 
         displayedItems.value = props.items.slice(0, props.initialCount);
 
         return {
-            displayedItems,
-            scrollContainer,
-            topSentinel,
-            bottomSentinel
+            displayedItems
         };
     },
     mounted() {
+        if (this.topSentinel && this.scrollContainer) {
+            this.topObserver = new IntersectionObserver(
+                (entries) => {
+                    const entry = entries[0];
+                    if (entry.isIntersecting) {
+                        this.$emit('at-top', { oldValue: false, newValue: true });
+                    } else {
+                        this.$emit('at-top', { oldValue: true, newValue: false });
+                    }
+                },
+                {
+                    root: this.scrollContainer,
+                    rootMargin: `${this.emitOptions?.topThreshold ?? 0}px 0px 0px 0px`,
+                    threshold: 0.5
+                }
+            );
+            this.topObserver.observe(this.topSentinel);
+        }
+
         if (this.bottomSentinel && this.scrollContainer) {
             this.bottomObserver = new IntersectionObserver(
                 (entries) => {
@@ -101,25 +118,6 @@ export default defineComponent({
                 }
             );
             this.bottomObserver.observe(this.bottomSentinel);
-        }
-
-        if (this.topSentinel && this.scrollContainer) {
-            this.topObserver = new IntersectionObserver(
-                (entries) => {
-                    const entry = entries[0];
-                    if (entry.isIntersecting) {
-                        this.$emit('at-top', { oldValue: false, newValue: true });
-                    } else {
-                        this.$emit('at-top', { oldValue: true, newValue: false });
-                    }
-                },
-                {
-                    root: this.scrollContainer,
-                    rootMargin: `${this.emitOptions?.topThreshold ?? 0}px 0px 0px 0px`,
-                    threshold: 0
-                }
-            );
-            this.topObserver.observe(this.topSentinel);
         }
     },
     beforeUnmount() {
